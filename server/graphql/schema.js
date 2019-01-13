@@ -9,10 +9,12 @@ import { buildSchema } from "graphql";
 module.exports = buildSchema(`
   type User {
     id: ID!
-    name: String!
+    firstName: String!
+    lastName: String!
     email: String!
     password: String!
     status: String!
+    createdAt: String!
   }
   
   type AuthData {
@@ -29,7 +31,7 @@ module.exports = buildSchema(`
 
   type RootQuery {
     login(email: String!, password: String!): AuthData
-    user: User!
+    user(id: ID!): User!
   }
 
   type RootMutation {

@@ -1,7 +1,9 @@
 <template>
   <v-toolbar fixec class="teal darken-3" dark>
     <v-toolbar-title class="mr-4">
-      DartLeague
+      <v-btn to="/" flat dark>
+        DartLeague
+      </v-btn>
     </v-toolbar-title>
     <v-toolbar-items>
       <v-btn to="/login" flat dark v-if="!$store.state.isUserLoggedIn">
@@ -36,8 +38,6 @@ export default {
 }
 </script>
 <style scoped>
-.navigation {
-  float: left;
-}
+
 </style>
 

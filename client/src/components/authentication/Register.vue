@@ -15,7 +15,7 @@
           autocomplete="new-password"
         ></v-text-field>
       </form>
-      <v-btn class="blue" dark @click="register">Register</v-btn>
+      <v-btn class="teal darken-3" dark @click="register">Register</v-btn>
     </panel>
   </v-flex>
 </v-layout>

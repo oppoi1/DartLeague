@@ -104,13 +104,15 @@ module.exports = {
     }
   },
   user: async function(args, req) {
-    // why am I using this
-    const user = await User.findByPk(req.userId)
+    // find user by id and return it
+    console.log(args.id)
+    const user = await User.findByPk(args.id)
     if(!user) {
       const error = new Error('No user found.')
       error.code = 404
       throw error
     }
+    console.log(user.id)
     return user
   }
 }
