@@ -11,6 +11,10 @@ import sequelize from './util/db'
 import https from 'https'
 import User from './models/user'
 import Team from './models/team'
+import League from './models/league'
+import Table from './models/table'
+import TableStanding from './models/tableStanding'
+import TableHistory from './models/tableHistory'
 // todo: logging, quite a lot logging!
 
 const app = express()
@@ -69,8 +73,11 @@ app.use((error, req, res, next) => {
 })
 
 User.hasMany(Team)
+League.belongsTo(Table)
+TableStanding.belongsTo(Table)
+TableHistory.belongsTo(Table)
 
-sequelize.sync({force: false})
+sequelize.sync({force: true})
 .then(result => {
   app.listen(process.env.port || 8081)
   console.log(`Magic happens on port ${process.env.port}`)
