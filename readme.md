@@ -9,14 +9,14 @@ Made with ExpressJS, GraphQL and VueJS.
 npm install
 ```
 
-# server
+## server
 
 ## Start server
 ```
 npm start
 ```
 
-# client
+## client
 
 ### Compiles and hot-reloads for development
 ```
