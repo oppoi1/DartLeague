@@ -1,4 +1,5 @@
 import User from '../models/user'
+import League from '../models/league'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import validator from 'validator'
@@ -17,6 +18,29 @@ mutation {
   email
   }
 }
+
+
+**new**:
+Relationship to addresses
+example:
+return User.create({
+  email: '...',
+  password: '...',
+  firstName: '...',
+  lastName: '...'
+  addresses: {
+    type: 'home',
+    line_1: 'Bahnhofstr'
+    city: 'Soest'
+    state: 'NRW',
+    zip: '33042'
+  }
+})
+which saves a user and an address!
+
+maybe useful for later if we get a full signup formular
+http://docs.sequelizejs.com/manual/tutorial/associations.html#creating-elements-of-a-belongsto-has-many-or-hasone-association
+Title: Creating elements of a "BelongsTo", "Has Many" or "HasOne" association
 */
 
 module.exports = {
@@ -114,5 +138,122 @@ module.exports = {
     }
     console.log(user.id)
     return user
+  },
+  /**
+   * Create Table and League in DB
+   */
+/*
+  mutation {
+    createLeague (leagueInput:{
+      cParticipants: 10,
+      name: "Premier League",
+      game: "dart"
+    }) 
+    {
+      id,
+      cParticipants,
+      name,
+      tableId
+    }
+  }
+*/
+  createLeague: async function({leagueInput, req}) {
+    console.log(leagueInput)
+    const errors = []
+    if(validator.isEmpty(leagueInput.name)) {
+      errors.push({message: `No name given.`})
+    }
+
+    // maybe more validation needed later on?
+    if(errors.length > 0) {
+      console.log(`errors ${errors}`)
+      const error = new Error(errors[0])
+      error.data = errors
+      error.code = 422
+      throw error
+    }
+
+    const existingLeague = await League.findOne({where: {name: leagueInput.name}})
+    if(existingLeague) {
+      console.log(`League exists already. ${leagueInput.name}`)
+      const error = new Error('League exists already.')
+      error.code = 422
+      throw error
+    }
+
+    // creates and saves League and Table in one step
+    return League.create({
+      cParticipants: leagueInput.cParticipants,
+      name: leagueInput.name.toLowerCase(),
+      game: leagueInput.game.toLowerCase(),
+      table: {
+        name: leagueInput.name.toLowerCase()
+      }
+    },
+    {
+      include: [{
+        association: League.Table
+      }]
+    })
+  },
+
+  /*
+query {
+  getLeague(id: "1") {
+    id,
+    cParticipants,
+    name,
+    game,
+    tableId
+  }
+}
+*/
+  getLeague: async function(args, req) {
+    console.log(args.id)
+    const errors = []
+    if(!args.id) {
+      errors.push({message: `No id given.`})
+    }
+    // can only check strings?
+    // if(validator.isEmpty(args.id)) {
+    //   errors.push({message: `No id given.`})
+    // }
+
+    if(errors.length > 0) {
+      console.log(`error: ${errors[0]}`)
+      const error = new Error()
+      error.data = errors
+      error.code = 422
+      throw error
+    }
+    const league = await League.findByPk(args.id)
+    if(!league) {
+      const error = new Error(`League not found with id ${args.id}`)
+      error.code = 404
+      throw error
+    }
+    return league
+  },
+
+
+/*
+query {
+  getAllLeagues {
+    id,
+    cParticipants,
+    name,
+    game,
+    tableId
+  }
+}
+*/
+  getAllLeagues: async function(req) {
+    const leagues = await League.findAll()
+    if(!leagues) {
+      const error = new Error(`No league found.`)
+      error.code = 404
+      throw error
+    }
+    return leagues
   }
 }

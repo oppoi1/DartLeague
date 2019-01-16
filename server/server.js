@@ -15,6 +15,7 @@ import League from './models/league'
 import Table from './models/table'
 import TableStanding from './models/tableStanding'
 import TableHistory from './models/tableHistory'
+import Addresses from './models/address'
 // todo: logging, quite a lot logging!
 
 const app = express()
@@ -73,11 +74,12 @@ app.use((error, req, res, next) => {
 })
 
 User.hasMany(Team)
-League.belongsTo(Table)
+User.Adresses = User.hasMany(Addresses) // to create one or more addresses when creating user
+League.Table = League.belongsTo(Table) // to use it as include when creating class object
 TableStanding.belongsTo(Table)
 TableHistory.belongsTo(Table)
 
-sequelize.sync({force: true})
+sequelize.sync({force: false})
 .then(result => {
   app.listen(process.env.port || 8081)
   console.log(`Magic happens on port ${process.env.port}`)

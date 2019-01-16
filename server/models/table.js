@@ -7,7 +7,8 @@ const Table = sequelize.define('table', {
     allowNull: false,
     autoIncrement: true,
     primaryKey: true
-  }
+  },
+  name: Sequelize.STRING
 })
 
 export default Table

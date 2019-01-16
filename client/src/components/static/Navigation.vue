@@ -6,6 +6,9 @@
       </v-btn>
     </v-toolbar-title>
     <v-toolbar-items>
+      <v-btn to="/dart/de" flat dark>Dart League</v-btn>
+    </v-toolbar-items>
+    <v-toolbar-items>
       <v-btn to="/login" flat dark v-if="!$store.state.isUserLoggedIn">
         Login
       </v-btn>

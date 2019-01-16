@@ -1,10 +1,11 @@
 import Api from 'axios'
+import * as CONFIG from '../config/config'
 
 export default {
   register(credentials) {
     return Api({
-      url: `http://localhost:3001/graphql`,
-      method: 'post',
+      url: CONFIG.url,
+      method: CONFIG.method,
       data: {
         query: 
         `
@@ -26,8 +27,8 @@ export default {
   },
   login(credentials) {
     return Api({
-      url: `http://localhost:3001/graphql`,
-      method: 'post',
+      url: CONFIG.url,
+      method: CONFIG.method,
       data: {
         query: 
         `

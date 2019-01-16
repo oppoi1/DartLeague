@@ -16,6 +16,19 @@ module.exports = buildSchema(`
     status: String!
     createdAt: String!
   }
+
+  type League {
+    id: ID!
+    cParticipants: Int!
+    name: String!
+    game: String!
+    tableId: Int!
+  }
+
+  type Table {
+    id: ID!,
+    name: String!
+  }
   
   type AuthData {
     token: String!
@@ -29,13 +42,22 @@ module.exports = buildSchema(`
     password: String!
   }
 
+  input leagueInput {
+    cParticipants: Int!
+    name: String!
+    game: String!
+  }
+
   type RootQuery {
     login(email: String!, password: String!): AuthData
     user(id: ID!): User!
+    getLeague(id: ID!): League!
+    getAllLeagues: [League]!
   }
 
   type RootMutation {
     signUp(userInput: userData): User!
+    createLeague(leagueInput: leagueInput): League!
   }
 
   schema {

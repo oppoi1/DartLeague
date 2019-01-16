@@ -8,9 +8,9 @@ const League = sequelize.define('league', {
     allowNull: false,
     primaryKey: true
   },
-  cParticipans: Sequelize.INTEGER,
-  name: Sequelize.STRING
+  cParticipants: Sequelize.INTEGER,
+  name: Sequelize.STRING,
+  game: Sequelize.STRING
 })
-// fk: table ID
 
 export default League
