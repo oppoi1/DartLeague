@@ -9,9 +9,18 @@ const TableStanding = sequelize.define('tableStanding', {
     primaryKey: true
   },
   player: Sequelize.STRING,
-  win: Sequelize.INTEGER,
-  loss: Sequelize.INTEGER,
-  cSpiele: Sequelize.INTEGER
+  win: {
+    type: Sequelize.INTEGER,
+    defaultValue: '0'
+  },
+    loss: {
+      type: Sequelize.INTEGER,
+      defaultValue: '0'
+    },
+  cSpiele: {
+    type: Sequelize.INTEGER,
+    defaultValue: '0'
+  },
 })
 
 export default TableStanding 

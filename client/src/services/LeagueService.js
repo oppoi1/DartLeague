@@ -64,5 +64,31 @@ export default {
         `
       }
     })
+  },
+  joinLeauge(credentials) {
+    // tableId and lastName expected
+    return Api({
+      url: CONFIG.url,
+      method: CONFIG.method,
+      data: {
+        query: 
+        `
+        query {
+          joinLeague (joinData:{
+            userId: ${credentials.userId},
+            tableId: ${credentials.tableId}
+          })
+          {
+            tableId,
+            player,
+            win,
+            loss,
+            cSpiele,
+            createdAt
+          }
+        }
+        `
+      }
+    })
   }
 }

@@ -8,7 +8,7 @@ const Table = sequelize.define('table', {
     autoIncrement: true,
     primaryKey: true
   },
-  name: Sequelize.STRING
+  name: Sequelize.STRING,
 })
 
 export default Table

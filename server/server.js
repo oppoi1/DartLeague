@@ -76,7 +76,8 @@ app.use((error, req, res, next) => {
 User.hasMany(Team)
 User.Adresses = User.hasMany(Addresses) // to create one or more addresses when creating user
 League.Table = League.belongsTo(Table) // to use it as include when creating class object
-TableStanding.belongsTo(Table)
+TableStanding.Table = TableStanding.belongsTo(Table) // necessary?
+// TableStanding.belongsTo(Table)
 TableHistory.belongsTo(Table)
 
 sequelize.sync({force: false})

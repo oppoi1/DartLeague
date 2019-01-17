@@ -15,7 +15,7 @@ export default {
             firstName,
             lastName,
             email,
-            status,
+            group,
             createdAt
           }
         }

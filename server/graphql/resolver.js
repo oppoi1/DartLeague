@@ -1,5 +1,6 @@
 import User from '../models/user'
 import League from '../models/league'
+import TableStandings from '../models/tableStanding'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import validator from 'validator'
@@ -255,5 +256,73 @@ query {
       throw error
     }
     return leagues
+  },
+
+
+  /*
+query {
+  joinLeague (joinData:{
+    userId: 1,
+    tableId: 1
+  })
+  {
+		tableId,
+    player,
+    win,
+    loss,
+    cSpiele,
+    createdAt
+  }
+}
+
+  */
+
+  // user join league
+  joinLeague: async function({joinData, req}) {
+    // tableId and userId expected
+    console.log(joinData)
+    const errors = []
+    // if(validator.isEmpty(joinData.userId)) {
+    //   errors.push({message: 'No last name given.'})
+    // }
+
+    if(errors.length > 0) {
+      const error = new Error('Something went wrong')
+      error.code = 422
+      throw error
+    }
+
+    // check tabble
+    const existingLeague = await League.findOne({where: {tableId: joinData.tableId}})
+    if(!existingLeague) {
+      const error = new Error(`Couldn't find league.`)
+      error.code = 404
+      throw error
+    }
+
+    const existingUser = await TableStandings.findOne({where: {player: joinData.userId, tableId: joinData.tableId}})
+    if(existingUser) {
+      console.log(`Error User is already in League`)
+      const error = new Error(`You are already in that league.`)
+      error.code = 402
+      throw error
+    }
+
+    return TableStandings.create({
+      player: joinData.userId, tableId: joinData.tableId
+    })
+
+    // return TableStandings
+    // // const tsTanding = TableStandings
+    // .findOrCreate({where: {player: joinData.userId}, 
+    //   defaults: {
+    //     player: joinData.userId, tableId: joinData.tableId, win: '0', loss: '0', cSpiele: '0'
+    //   }})
+    // // .spread((tableStanding, created) => {
+    //   console.log(tableStanding.get({
+    //     plain: true
+    //   }))
+    //   console.log(created)
+    // })
   }
 }

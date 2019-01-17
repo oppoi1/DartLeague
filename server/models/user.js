@@ -21,7 +21,7 @@ const User = sequelize.define('user', {
   lastName: {
     type: Sequelize.STRING
   },
-  status: {
+  group: {
     type: Sequelize.STRING,
     default: 'test'
   },
