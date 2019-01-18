@@ -90,5 +90,27 @@ export default {
         `
       }
     })
+  },
+  getStandings(credentials) {
+    //eslint-disable-next-line
+    return Api({
+      url: CONFIG.url,
+      method: CONFIG.method,
+      data: {
+        query: 
+        `
+        query {
+          getStandings(id: ${credentials.tableId}) {
+            id,
+            player,
+            win,
+            loss,
+            cSpiele,
+            createdAt
+          }
+        }
+        `
+      }
+    })
   }
 }

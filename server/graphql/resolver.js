@@ -324,5 +324,41 @@ query {
     //   }))
     //   console.log(created)
     // })
+  },
+
+  /*
+  query {
+    getStandings(id: 1) {
+      id,
+      player,
+      win,
+      loss,
+      cSpiele,
+      createdAt
+    }
+  }
+  */
+  // get rankings
+  // todo: sorting and username
+  getStandings: async function(args, req) {
+    console.log(args)
+    const errors = []
+
+    if(errors.length > 0) {
+      const error = new Error('Something went wrong')
+      error.code = 422
+      throw error
+    }
+
+    // todo: find and count all?
+    const tableStandings = await TableStandings.findAll({where: {tableId: args.id}})
+    if(!tableStandings) {
+      console.log(`Standings coudln't be found`)
+      const error = new Error(`Standings not found.`)
+      error.code = 404
+      throw error
+    }
+
+    return tableStandings
   }
 }

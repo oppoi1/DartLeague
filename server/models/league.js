@@ -8,7 +8,7 @@ const League = sequelize.define('league', {
     allowNull: false,
     primaryKey: true
   },
-  cParticipants: Sequelize.INTEGER,
+  cParticipants: Sequelize.INTEGER, // only for tournaments
   name: Sequelize.STRING,
   game: Sequelize.STRING
 })

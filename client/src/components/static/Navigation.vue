@@ -19,6 +19,11 @@
       </v-btn>
     </v-toolbar-items>
     <v-toolbar-items>
+      <v-btn :to="{name: 'user', params: {userId: userId}}" flat dark v-if="$store.state.isUserLoggedIn">
+        Profile
+      </v-btn>
+    </v-toolbar-items>
+    <v-toolbar-items>
       <v-btn @click="logout" flat dark v-if="$store.state.isUserLoggedIn">
         Logout
       </v-btn>
@@ -29,6 +34,14 @@
 <script>
 export default {
   name: 'Navigation',
+  data() {
+    return {
+      userId: null
+    }
+  },
+  mounted() {
+    this.userId = this.$store.state.user
+  },
   methods: {
     logout () {
       this.$store.dispatch('setToken', null)

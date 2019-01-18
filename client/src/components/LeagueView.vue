@@ -21,6 +21,16 @@
         user Id: {{user}}
       </div>
       <v-btn class="test" @click="joinLeague(user, league.tableId)">Join</v-btn>
+      <v-btn class="test" @click="getStandings(league.tableId)">Standings</v-btn>
+      <div>
+        Standings
+        <div>
+          {{ standings }}
+        </div>
+        <div v-for="standing in standings" :key="standing">
+          {{ standing.id }} - {{ standing.player }} - stats: {{ standing.win }}:{{ standing.loss }} 
+        </div>
+      </div>
     </div>
   </v-flex>
 </v-layout>
@@ -33,23 +43,25 @@ export default {
   data() {
     return {
       league: {},
-      error: null,
       user: 0,
-      success: null
+      standings: {},
+      error: null,
+      success: null,
     }
   },
   async mounted() {
     const league = this.$store.state.route.params.tId
     this.user = this.$store.state.user
-     try {
-        const response = (await LeagueService.getLeagues(league)).data
-      if(response.data.errors) {
-        this.error = response.data.errors[0].message
-      }
-        this.league = response.data.getLeague
-      } catch(error) {
-        this.error = error.response.data.errors[0].message
-      }
+
+    try {
+      const response = (await LeagueService.getLeagues(league)).data
+    if(response.data.errors) {
+      this.error = response.data.errors[0].message
+    }
+      this.league = response.data.getLeague
+    } catch(error) {
+      this.error = error.response.data.errors[0].message
+    }
   },
   methods: {
     async joinLeague(userId, tableId) {
@@ -62,6 +74,16 @@ export default {
         return
       }
       this.success = 'Successfully entered!'
+    },
+    async getStandings(tableId) {
+      const response = await LeagueService.getStandings({
+        tableId: tableId
+      })
+      if(response.data.errors) {
+        this.error = response.data.errors[0].message
+      return
+      }
+      this.standings = response.data.data.getStandings
     }
   }
 }

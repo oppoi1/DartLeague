@@ -31,7 +31,7 @@ module.exports = buildSchema(`
   }
 
   type StandingsData {
-    tableId: Int!
+    id: ID!
     player: Int!
     win: String!
     loss: String!
@@ -68,6 +68,7 @@ module.exports = buildSchema(`
     getLeague(id: ID!): League!
     getAllLeagues: [League]!
     joinLeague(joinData: joinData): StandingsData
+    getStandings(id: ID!): [StandingsData]!
   }
 
   type RootMutation {
