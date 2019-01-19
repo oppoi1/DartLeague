@@ -327,6 +327,53 @@ query {
   },
 
   /*
+query {
+  leaveLeague(leaveData: {
+    tableId: 1,
+    userId: 2
+  })
+  {
+    id,
+    player,
+    win,
+    loss,
+    cSpiele,
+    createdAt,
+    active
+  }
+}
+  */
+
+  leaveLeague: async function({leaveData, req}) {
+    console.log(leaveData)
+    const errors = []
+
+    if(errors.length > 0) {
+      const error = new Error(`Something went wrong`)
+      error.code = 422
+      throw error
+    }
+
+    const existingLeague = await League.findOne({where: {tableId: leaveData.tableId}})
+    if(!existingLeague) {
+      const error = new Error(`Can't leave this league.`)
+      error.code = 402
+      throw error
+    }
+
+    const userInLeague = await TableStandings.findOne({where: {tableId: leaveData.tableId, player: leaveData.userId}})
+    if(!userInLeague) {
+      const error = new Error(`You have to enter this league before you can leave`)
+      error.code = 402
+      throw error
+    }
+
+    userInLeague.active = 0
+
+    return userInLeague.save()
+  },
+
+  /*
   query {
     getStandings(id: 1) {
       id,
@@ -339,9 +386,10 @@ query {
   }
   */
   // get rankings
+  // I get args(args.id) and req. -> deconstructuring: {id, req}
   // todo: sorting and username
-  getStandings: async function(args, req) {
-    console.log(args)
+  getStandings: async function({id, req}) {
+    console.log(id)
     const errors = []
 
     if(errors.length > 0) {
@@ -351,7 +399,7 @@ query {
     }
 
     // todo: find and count all?
-    const tableStandings = await TableStandings.findAll({where: {tableId: args.id}})
+    const tableStandings = await TableStandings.findAll({where: {tableId: id}})
     if(!tableStandings) {
       console.log(`Standings coudln't be found`)
       const error = new Error(`Standings not found.`)

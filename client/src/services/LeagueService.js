@@ -91,6 +91,32 @@ export default {
       }
     })
   },
+  leaveLeague(credentials) {
+    return Api({
+      url: CONFIG.url,
+      method: CONFIG.method,
+      data: {
+        query: 
+        `
+        query {
+          leaveLeague(leaveData: {
+            tableId: ${credentials.tableId},
+            userId: ${credentials.userId}
+          })
+          {
+            id,
+            player,
+            win,
+            loss,
+            cSpiele,
+            createdAt,
+            active
+          }
+        }
+        `
+      }
+    })
+  },
   getStandings(credentials) {
     //eslint-disable-next-line
     return Api({

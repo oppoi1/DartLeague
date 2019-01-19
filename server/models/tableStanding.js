@@ -21,6 +21,7 @@ const TableStanding = sequelize.define('tableStanding', {
     type: Sequelize.INTEGER,
     defaultValue: '0'
   },
+  active: Sequelize.BOOLEAN
 })
 
 export default TableStanding 

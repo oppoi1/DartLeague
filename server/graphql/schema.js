@@ -37,6 +37,7 @@ module.exports = buildSchema(`
     loss: String!
     cSpiele: String!
     createdAt: String!
+    active: Boolean!
   }
   
   type AuthData {
@@ -68,6 +69,7 @@ module.exports = buildSchema(`
     getLeague(id: ID!): League!
     getAllLeagues: [League]!
     joinLeague(joinData: joinData): StandingsData
+    leaveLeague(leaveData: joinData): StandingsData
     getStandings(id: ID!): [StandingsData]!
   }
 
