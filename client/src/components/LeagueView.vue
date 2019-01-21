@@ -20,7 +20,7 @@
       <div>
         user Id: {{user}}
       </div>
-      <div v-if="user">
+      <div v-if="inLeague">
         <v-btn class="test" @click="leaveLeague(user, league.tableId)">Leave</v-btn>
       </div>
       <div v-else>
@@ -36,6 +36,9 @@
           {{ standing.id }} - {{ standing.player }} - stats: {{ standing.win }}:{{ standing.loss }} 
         </div>
       </div>
+      <div>
+        {{ inLeague }}
+      </div>
     </div>
   </v-flex>
 </v-layout>
@@ -43,6 +46,7 @@
 
 <script>
 import LeagueService from '../services/LeagueService'
+import UserService from '../services/UserService'
 
 export default {
   data() {
@@ -52,6 +56,7 @@ export default {
       standings: {},
       error: null,
       success: null,
+      inLeague: null,
     }
   },
   async mounted() {
@@ -67,6 +72,26 @@ export default {
     }
       this.league = response.data.getLeague
     } catch(error) {
+      this.error = error.response.data.errors[0].message
+    }
+    // check if user is in league or not
+    try {
+      let { data: response } = await UserService.userInLeague({
+        tableId: league,
+        userId: this.user
+      })
+      this.inLeague = response.data
+
+      if(response.data.userInLeague === null) {
+        this.inLeague = false
+      } else {
+        this.inLeague = true
+      }
+      if(response.data.errors) {
+      this.error = response.data.errors[0].message
+    }
+    } catch (error) {
+      this.inLeague = false
       this.error = error.response.data.errors[0].message
     }
   },

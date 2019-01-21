@@ -39,6 +39,10 @@ module.exports = buildSchema(`
     createdAt: String!
     active: Boolean!
   }
+
+  type InLeague {
+    inLeague: Boolean!
+  }
   
   type AuthData {
     token: String!
@@ -66,6 +70,7 @@ module.exports = buildSchema(`
   type RootQuery {
     login(email: String!, password: String!): AuthData
     user(id: ID!): User!
+    userInLeague(joinData: joinData): StandingsData
     getLeague(id: ID!): League!
     getAllLeagues: [League]!
     joinLeague(joinData: joinData): StandingsData

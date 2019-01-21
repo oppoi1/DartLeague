@@ -22,5 +22,29 @@ export default {
         `
       }
     })
+  },
+  userInLeague(credentials) {
+    return Api({
+      url: CONFIG.url,
+      method: CONFIG.method,
+      data: {
+        query: 
+        `
+        query {
+          userInLeague(joinData:{
+            tableId: ${credentials.tableId},
+            userId: ${credentials.userId}
+          }),
+          {
+            id,
+            player,
+            win,
+            loss,
+            active
+          }
+        }
+        `
+      }
+    })
   }
 }

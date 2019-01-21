@@ -140,6 +140,35 @@ module.exports = {
     console.log(user.id)
     return user
   },
+
+  /*
+  query {
+    userInLeague(joinData:{
+      tableId: 1,
+      userId:1
+    }),
+    {
+      id,
+      player,
+      win,
+      loss,
+      active
+    }
+  }
+  */
+  userInLeague: async function({joinData, req}) {
+    // find user by id and check if in league
+    const user = await User.findByPk(joinData.userId)
+    if(!user) {
+      const error = new Error(`No user found.`)
+      error.code = 404
+      throw error
+    }
+
+    const userInLeague = await TableStandings.findOne({where: {player: joinData.userId, tableId: joinData.tableId, active: '1'}})
+    return userInLeague
+  },
+
   /**
    * Create Table and League in DB
    */

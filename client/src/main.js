@@ -9,6 +9,7 @@ import Panel from './components/Panels/Panel'
 
 Vue.config.productionTip = false
 
+// does not work - check vuetify why
 Vue.use(Vuetify, {
   iconfont: 'mdi' // 'md' || 'mdi' || 'fa' || 'fa4'
 })
@@ -19,6 +20,6 @@ sync(store, router)
 
 new Vue({
   render: h => h(App),
-  router,
-  store
+  router, // we get access to this.$router
+  store // we get access to this.$store
 }).$mount('#app')
